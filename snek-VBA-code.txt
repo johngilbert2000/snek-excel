@@ -26,25 +26,25 @@
     'Lose?
 
 
-'GLOBAL VARIABLES
+'''GLOBAL VARIABLES
 
-    '(Global variables were used because if instead these variables were to be declared inside of a main() function or subroutine,
+    '''(Global variables were used because if instead these variables were to be declared inside of a main() function or subroutine,
         'then any of the other subroutines nested inside of main() would lack access to those variables if they were ever called separately.
         'Alternatively, if only local variables are used, then values stored by one subroutine cannot be accessed by another subroutine)
 
-Dim body(), foods() As Variant 'arrays containing locations of snek body and food coordinates
-Dim bsize, fsize As Variant 'sizes of body and foods arrays
-Dim direction(1) As Variant 'array of the x (rows) and y (column) directions of the snek
-Dim downDisable, upDisable, leftDisable, rightDisable As Boolean 'booleans that prevent the snek head from moving into its body
-Dim game As Boolean 'determines if game is running
-Dim head(1), tail(1) As Variant 'x and y coordinates of head and tail of snek, as contained in the body array
-Dim score As Integer 'number of foods eaten
-Dim highscore As Integer 'score needed to win; determined in initialize sub
+Dim body(), foods() As Variant                              'arrays containing locations of snek body and food coordinates
+Dim bsize, fsize As Variant                                 'sizes of body and foods arrays
+Dim direction(1) As Variant                                 'array of the x (rows) and y (column) directions of the snek
+Dim downDisable, upDisable, leftDisable, rightDisable As Boolean        'booleans that prevent the snek head from moving into its body
+Dim game As Boolean                                         'determines if game is running
+Dim head(1), tail(1) As Variant                             'x and y coordinates of head and tail of snek, as contained in the body array
+Dim score As Integer                                        'number of foods eaten
+Dim highscore As Integer                                    'score needed to win; determined in initialize sub
 
 
 
 Sub Intro_Message()
-'Gives an instructional message on how to play
+'''Gives an instructional message on how to play
 
     Dim message As String
     message = "Click 'New Game' to begin." & vbCrLf
@@ -58,12 +58,12 @@ Sub Intro_Message()
 End Sub
 
 
-'FORMATTING
+'''FORMATTING
 
-    'CELL SIZE
+    '''CELL SIZE
     
     Sub Pixels()
-    'resizes the cells to make pixels
+    '''resizes the cells to make pixels
     
         Dim height, width As Integer
         
@@ -77,10 +77,10 @@ End Sub
     
     End Sub
     
-    'BACKGROUND
+    '''BACKGROUND
     
     Sub Background()
-    'colors the board background blue
+    '''colors the board background blue
     
         Dim height, width As Integer
         
@@ -99,16 +99,16 @@ End Sub
 
 
 
-'ENTITIES
+'''ENTITIES
 
-    'INITIALIZE SNEK
+    '''INITIALIZE SNEK
     
     Sub Create_Body()
-    'builds the array body(), which contains the x and y coordinates of each part of the snek
+    '''builds the array body(), which contains the x and y coordinates of each part of the snek
     
         bsize = 7
         
-        Dim start_x, start_y As Integer 'starting positions of the snek head
+        Dim start_x, start_y As Integer             'starting positions of the snek head
         start_x = 30 'x is board height (rows)
         start_y = 30 'y is board width (columns)
         
@@ -125,35 +125,36 @@ End Sub
             body(2, i) = body(2, i - 1)
         Next i
         
-        'saves the coordinates of the snek head (for convenience)
-        head(0) = body(1, 1) 'row coordinate
-        head(1) = body(2, 1) 'column coordinate
+        '''saves the coordinates of the snek head (for convenience)
+        head(0) = body(1, 1)                    'row coordinate
+        head(1) = body(2, 1)                    'column coordinate
         
-        'saves the coordinates of the snek tail (for convenience)
-        tail(0) = body(1, bsize) 'row coordinate
-        tail(1) = body(2, bsize) 'column coordinate
+        '''saves the coordinates of the snek tail (for convenience)
+        tail(0) = body(1, bsize)                'row coordinate
+        tail(1) = body(2, bsize)                'column coordinate
         
-        Draw_Body_Initialize 'draws the entire snek body
-        downDisable = True 'fixes a bug at the beginning of the game where the snek's head could move in opposite direction of body
+        Draw_Body_Initialize                    'draws the entire snek body
+        downDisable = True                      'fixes a bug at the beginning of the game where the snek's head 
+                                                        'could move in opposite direction of body
         
     End Sub
     
-    'MAKE FOODS
+    '''MAKE FOODS
     
     Sub Create_Food()
-    'determines where to place the next piece of food, and stores the coordinates in the foods() array
+    '''determines where to place the next piece of food, and stores the coordinates in the foods() array
     
         fsize = 2 'size of foods() array
         Dim height, width As Integer
         
-        height = 55 'maximum row that food can be placed
-        width = 55 'maximum column that food can be placed
+        height = 55                             'maximum row that food can be placed
+        width = 55                              'maximum column that food can be placed
         
-        'generates a random cell on the board
-        start_x = Int((height - 3) * Rnd + 4) 'random cell between 4 and height (55)
-        start_y = Int((width - 3) * Rnd + 4) 'random cell between 4 and width (55)
+        '''generates a random cell on the board
+        start_x = Int((height - 3) * Rnd + 4)   'random cell between 4 and height (55)
+        start_y = Int((width - 3) * Rnd + 4)    'random cell between 4 and width (55)
         
-        'ensure food piece is not placed in current snek location
+        '''ensure food piece is not placed in current snek location
         For i = 1 To bsize
             If (body(1, i) = start_x) And (body(2, i) = start_y) Then
                 start_x = Int((height - 2 + 1) * Rnd + 2)
@@ -161,7 +162,7 @@ End Sub
             End If
         Next i
         
-        'store new food location into foods() array
+        '''store new food location into foods() array
         ReDim Preserve foods(1 To fsize)
         
         foods(1) = start_x
@@ -173,14 +174,14 @@ End Sub
     End Sub
     
     Sub Draw_Foods()
-    'colors the cell containing food, with coordinates specified by the foods() array
+    '''colors the cell containing food, with coordinates specified by the foods() array
     
         Sheets("snek").Cells(foods(1), foods(2)).Interior.Color = RGB(226, 107, 136)
         
     End Sub
     
     Sub Show_Score()
-    'updates the score shown on the screen
+    '''updates the score shown on the screen
     
         Sheets("snek").Cells(1, 1).Value = "Score: " & score
     
@@ -191,7 +192,7 @@ End Sub
 'MECHANICS
 
     Sub Delay(some_time As Long)
-    'A makeshift timer; used wait some number of milliseconds by running an empty loop
+    '''A makeshift timer; used wait some number of milliseconds by running an empty loop
 
         Dim n As Long
     
@@ -202,7 +203,7 @@ End Sub
     End Sub
 
     Sub Declare_Keys()
-    'declares the keyboard keys that the user uses as input
+    '''declares the keyboard keys that the user uses as input
     
         Application.OnKey Key:="{UP}", Procedure:="Up_Key"
         Application.OnKey Key:="{DOWN}", Procedure:="Down_Key"
@@ -212,10 +213,10 @@ End Sub
         
     End Sub
 
-    'CHANGE DIRECTION
+    '''CHANGE DIRECTION
 
     Sub Up_Key()
-    'tells the snek to move up, provided that it isn't already heading downwards
+    '''tells the snek to move up, provided that it isn't already heading downwards
     
         If upDisable = False Then
         
@@ -234,7 +235,7 @@ End Sub
     End Sub
     
     Sub Down_Key()
-    'tells the snek to move down, provided it isn't already heading upwards
+    '''tells the snek to move down, provided it isn't already heading upwards
     
         If downDisable = False Then
         
@@ -253,7 +254,7 @@ End Sub
     End Sub
     
     Sub Left_Key()
-    'tells the snek to move left, provided it isn't already heading right
+    '''tells the snek to move left, provided it isn't already heading right
     
         If leftDisable = False Then
             
@@ -272,7 +273,7 @@ End Sub
     End Sub
     
     Sub Right_Key()
-    'tells the snek to move right, provided it isn't already heading left
+    '''tells the snek to move right, provided it isn't already heading left
     
         If rightDisable = False Then
             
@@ -291,80 +292,81 @@ End Sub
     End Sub
 
     
-    'CONTINUOUS MOVEMENT
+    '''CONTINUOUS MOVEMENT
     
     Sub Movement()
-    'moves the coordinates of the snek body based on the direction() array
+    '''moves the coordinates of the snek body based on the direction() array
     
         Dim bodytemp() As Variant
         ReDim Preserve bodytemp(1 To 2, 1 To (bsize + 1))
         
-        'makes an array bodytemp() that temporarily stores the old values of the snek's body()
+        '''makes an array bodytemp() that temporarily stores the old values of the snek's body()
         For i = 1 To bsize
             bodytemp(1, i) = body(1, i)
             bodytemp(2, i) = body(2, i)
         Next i
         
-        'moves the head of the snek based on direction()
+        '''moves the head of the snek based on direction()
         head(0) = head(0) + direction(0) 'move head up/down
         head(1) = head(1) + direction(1) 'move head left/right
         
-            'stores the new coordinates of the head in the body() array
-            '(note that while the code is a bit redundant here, the head() array was created just to help with the readability of other subroutines)
+            '''stores the new coordinates of the head in the body() array
+            '''(note that while the code is a bit redundant here, 
+                    '''the head() array was created just to help with the readability of other subroutines)
             body(1, 1) = head(0)
             body(2, 1) = head(1)
         
-        'effectively moves each coordinate stored in body() down one index, using the values stored in bodytemp() to do so
-        'also, the tail of bodytemp is not included in the new body() array, unless the snek grows (i.e., bsize increases by 1)
-                'this all causes the snek body to follow the head wherever it goes
+        '''effectively moves each coordinate stored in body() down one index, using the values stored in bodytemp() to do so
+        '''also, the tail of bodytemp is not included in the new body() array, unless the snek grows (i.e., bsize increases by 1)
+                '''this all causes the snek body to follow the head wherever it goes
         For i = 2 To bsize
             body(1, i) = bodytemp(1, i - 1)
             body(2, i) = bodytemp(2, i - 1)
         Next i
         
-        'saves the last coordinates in body() to the tail() array
-        'this part is redundant, and is done purely for the readability of code in other subroutines
+        '''saves the last coordinates in body() to the tail() array
+        '''this part is redundant, and is done purely for the readability of code in other subroutines
         tail(0) = body(1, bsize)
         tail(1) = body(2, bsize)
         
-        Draw_Body 'draws the cells that change in the snek body
+        Draw_Body                   'draws the cells that change in the snek body
         
     End Sub
     
     Sub Draw_Body_Initialize()
-    'colors the cells of the entire snek body, with coordinates specified in the body() array
+    '''colors the cells of the entire snek body, with coordinates specified in the body() array
     
         For i = LBound(body, 2) To UBound(body, 2)
             Sheets("snek").Cells(body(1, i), body(2, i)).Interior.Color = RGB(150, 230, 50)
         Next i
         
-        'gives the head of the snek a special color
+        '''gives the head of the snek a special color
         Sheets("snek").Cells(head(0), head(1)).Interior.Color = RGB(50, 230, 50)
         
-        'colors the tail of the snek to match the background
+        '''colors the tail of the snek to match the background
         Sheets("snek").Cells(tail(0), tail(1)).Interior.Color = RGB(210, 223, 255)
         
     End Sub
     
     Sub Draw_Body()
-    'colors the cells that change in the snek body, with coordinates specified in the body() array
+    '''colors the cells that change in the snek body, with coordinates specified in the body() array
         
-        'gives the new head of the snek a special color
+        '''gives the new head of the snek a special color
         Sheets("snek").Cells(head(0), head(1)).Interior.Color = RGB(50, 230, 50)
         
-        'makes the old head of the snek match the rest of the body
+        '''makes the old head of the snek match the rest of the body
         Sheets("snek").Cells(body(1, 2), body(2, 2)).Interior.Color = RGB(150, 230, 50)
         
-        'colors the tail of the snek to match the background
+        '''colors the tail of the snek to match the background
         Sheets("snek").Cells(tail(0), tail(1)).Interior.Color = RGB(210, 223, 255)
         
     End Sub
     
-    'EAT & UPDATE FOOD
+    '''EAT & UPDATE FOOD
     
     Sub Eat_Foods()
-    'checks to see if the location of the head of the snek overlaps with the coordinates of the food
-    'if so, it updates the score, snek size, and creates another piece of food
+    '''checks to see if the location of the head of the snek overlaps with the coordinates of the food
+    '''if so, it updates the score, snek size, and creates another piece of food
     
         If (head(0) = foods(1)) And (head(1) = foods(2)) Then
             score = score + 1
@@ -377,35 +379,36 @@ End Sub
 
 
     
-'RUN GAME
+'''RUN GAME
 
-    'INITIALIZE GAME
+    '''INITIALIZE GAME
     
     Sub Initialize()
-    'Starts the game
+    '''Starts the game
     
-        game = True 'used to deremine if the game is running
+        game = True                     'used to deremine if the game is running
         score = 0 'sets initial score
-        highscore = 30 'sets the score needed to run the Win() subroutine
+        highscore = 30                  'sets the score needed to run the Win() subroutine
         
-        Background 'colors the background
-        Create_Body 'creates and draws the snek body
-        Create_Food 'creates and draws the snek food
-        Declare_Keys 'sets the arrow keys to run subroutines up_key, left_key, down_key, and right_key when the corresponding keys are pressed
+        Background                      'colors the background
+        Create_Body                     'creates and draws the snek body
+        Create_Food                     'creates and draws the snek food
+        Declare_Keys                    'sets the arrow keys to run subroutines 
+                                            'up_key, left_key, down_key, and right_key when the corresponding keys are pressed
         
-        'creates a initial direction for the snek (i.e., up)
-        direction(0) = -1 'change in row coordinates
-        direction(1) = 0 'change in column coordinates
+        '''creates a initial direction for the snek (i.e., up)
+        direction(0) = -1               'change in row coordinates
+        direction(1) = 0                'change in column coordinates
         
-        Game_Update 'run the Game_Update sub, which prompts the game to run continuously as long as game = True
+        Game_Update                     'run the Game_Update sub, which prompts the game to run continuously as long as game = True
         
     End Sub
     
     
-    'RESET GAME
+    '''RESET GAME
     
     Sub Restart()
-    'resets the game parameters, but does not run the game
+    '''resets the game parameters, but does not run the game
     
         score = 0
         bsize = 7
@@ -419,32 +422,32 @@ End Sub
         direction(0) = -1
         direction(1) = 0
         
-        game = False 'this part is the only difference between Restart() and Initialize()
+        game = False                'this part is the only difference between Restart() and Initialize()
 
     End Sub
     
     
-    'UPDATE ENTITIES
+    '''UPDATE ENTITIES
     
     Sub Game_Update()
-    'updates snek movement, checks to see if food is eaten, and checks to see if the game is won or lost
-            'also calls another update for the game one second later
+    '''updates snek movement, checks to see if food is eaten, and checks to see if the game is won or lost
+            '''also calls another update for the game one second later
         
         Movement
         Eat_Foods
         Lose
         Win
         
-        'tells the program to call multi_Update in one second
+        '''tells the program to call multi_Update in one second
         Application.OnTime DateAdd("s", 1, Now), "multi_Update"
         
     End Sub
     
     Sub multi_Update()
-    'if the game is still running, (i.e., not won, lost or paused),
-        'then this updates the game multiple times (with newUpdate)
-        'then calls another update (Game_Update), which will create a continuous loop
-            'by calling multi_Update again, and consequently the game will keep running as long as it is not won or lost or paused
+    '''if the game is still running, (i.e., not won, lost or paused),
+        '''then this updates the game multiple times (with newUpdate)
+        '''then calls another update (Game_Update), which will create a continuous loop
+            '''by calling multi_Update again, and consequently the game will keep running as long as it is not won or lost or paused
     
         For i = 1 To 3
             If game = True Then
@@ -460,8 +463,8 @@ End Sub
     End Sub
     
     Sub newUpdate()
-    'updates the game similar to Game_Update, except this update does not create a continuous loop
-        '(i.e., this update does not call another update)
+    '''updates the game similar to Game_Update, except this update does not create a continuous loop
+        '''(i.e., this update does not call another update)
         
         Movement
         Eat_Foods
@@ -472,21 +475,21 @@ End Sub
 
 
 
-'GAME STATE
+'''GAME STATE
 
-    'PAUSE GAME
+    '''PAUSE GAME
     
     Sub Pause()
-    'Pauses the game, so that multi_Update does not call other updates
+    '''Pauses the game, so that multi_Update does not call other updates
     
         game = False
         
     End Sub
     
-    'UNPAUSE GAME
+    '''UNPAUSE GAME
     
     Sub Unpause()
-    'Causes the game to continuously update again
+    '''Causes the game to continuously update again
     
     On Error Resume Next
     
@@ -498,12 +501,12 @@ End Sub
     'WIN?
     
     Sub Win()
-    'if highscore is reached (as specified in Initialize sub), then give the user a win message
+    '''if highscore is reached (as specified in Initialize sub), then give the user a win message
     
         Dim msg As Integer
         Dim str As String
         
-        'checks to see if the user won
+        '''checks to see if the user won
         If (score = highscore) Then
         
             Pause
@@ -513,11 +516,11 @@ End Sub
             
             'Allow the winning user to choose to keep playing
             If msg = vbYes Then
-                highscore = highscore * 2 'creates a new highscore to be reached
+                highscore = highscore * 2           'creates a new highscore to be reached
                 Unpause
             End If
             
-            'Allow winning user to choose to stop playing
+            '''Allow winning user to choose to stop playing
             If msg = vbNo Then
                 Restart
             End If
@@ -526,16 +529,16 @@ End Sub
         
     End Sub
     
-    'LOSE?
+    '''LOSE?
     
     Sub Lose()
-    'if the snek hits itself or if it hits a wall, the user loses
+    '''if the snek hits itself or if it hits a wall, the user loses
     
         Dim msg As Integer
         Dim str As String
         
-        'checks to see if the snek ate itself
-        'if the snek ate itself, resets the game
+        '''checks to see if the snek ate itself
+        '''if the snek ate itself, resets the game
         For i = 2 To bsize
             If (body(1, 1) = body(1, i)) And (body(2, 1) = body(2, i)) Then
                 Pause
@@ -547,8 +550,8 @@ End Sub
             End If
         Next i
         
-        'checks to see if the snek hit a wall
-        'if the snek hit a wall, resets the game
+        '''checks to see if the snek hit a wall
+        '''if the snek hit a wall, resets the game
         If (head(0) + direction(0) > 60) Or (head(0) + direction(0) < 2) Or (head(1) + direction(1) > 60) Or (head(1) + direction(1) < 2) Then
             Pause
             str = "Score: " & CStr(score)
