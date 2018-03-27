@@ -12,5 +12,3 @@ For best performance, press and hold the arrow key corresponding to the directio
 
 
 Note: Some performance had to be sacrificed to allow this to work on all operating systems (Windows APIs were not used, and Excel VBA can only do one thing at a time without Windows APIs). If you experience any serious bugs, let me know.
-
-As far as I can tell, Excel was not really designed for video games. 
