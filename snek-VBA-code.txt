@@ -109,8 +109,8 @@ End Sub
         bsize = 7
         
         Dim start_x, start_y As Integer             'starting positions of the snek head
-        start_x = 30 'x is board height (rows)
-        start_y = 30 'y is board width (columns)
+        start_x = 30                                'x is board height (rows)
+        start_y = 30                                'y is board width (columns)
         
         ReDim Preserve body(1 To 2, 1 To bsize)     'body( x to y, cell value )
         
@@ -144,7 +144,7 @@ End Sub
     Sub Create_Food()
     '''determines where to place the next piece of food, and stores the coordinates in the foods() array
     
-        fsize = 2 'size of foods() array
+        fsize = 2                               'size of foods() array
         Dim height, width As Integer
         
         height = 55                             'maximum row that food can be placed
