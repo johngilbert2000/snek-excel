@@ -3,6 +3,8 @@ A snake game that runs in Microsoft Excel, written using VBA.
 
 To begin, download the Snek3.0.xlsm file, open it in Microsoft Excel, and Enable Macros.
 
+![snekgame](https://user-images.githubusercontent.com/37820010/37943708-ac996804-3146-11e8-8cb8-36b2648eed0a.png)
+
 Click "New Game," and use the arrow keys to control the snake.
 
 For best performance, press and hold the arrow key corresponding to the direction you want the snake to move.
