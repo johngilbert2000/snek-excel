@@ -31,8 +31,6 @@
     '(Global variables were used because if instead these variables were to be declared inside of a main() function or subroutine,
         'then any of the other subroutines nested inside of main() would lack access to those variables if they were ever called separately.
         'Alternatively, if only local variables are used, then values stored by one subroutine cannot be accessed by another subroutine)
-    'VBA is heavily object oriented, such that global variables become highly convenient to use, if not necessary,
-        'despite the risks of creating side effects or unreadable "spaghetti code"
 
 Dim body(), foods() As Variant 'arrays containing locations of snek body and food coordinates
 Dim bsize, fsize As Variant 'sizes of body and foods arrays
